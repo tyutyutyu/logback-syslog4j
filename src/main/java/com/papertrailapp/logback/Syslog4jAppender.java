@@ -15,8 +15,7 @@ public class Syslog4jAppender<E> extends AppenderBase<E> {
 
     @Override
     protected void append(E loggingEvent) {
-        int level = getSeverityForEvent(loggingEvent);
-        syslog.log(level, layout.doLayout(loggingEvent));
+        syslog.log(getSeverityForEvent(loggingEvent), layout.doLayout(loggingEvent));
    }
 
     @Override
@@ -29,7 +28,6 @@ public class Syslog4jAppender<E> extends AppenderBase<E> {
                 syslog = (SyslogIF) syslogClass.newInstance();
 
                 syslog.initialize(syslogClass.getSimpleName(), syslogConfig);
-
             } catch (ClassCastException cse) {
                 throw new SyslogRuntimeException(cse);
             } catch (IllegalAccessException iae) {
@@ -59,8 +57,12 @@ public class Syslog4jAppender<E> extends AppenderBase<E> {
      * @see ch.qos.logback.core.net.SyslogAppenderBase#getSeverityForEvent(java.lang.Object)
      */
     public int getSeverityForEvent(Object eventObject) {
-        ILoggingEvent event = (ILoggingEvent) eventObject;
-        return LevelToSyslogSeverity.convert(event);
+        if (eventObject instanceof ILoggingEvent) {
+            ILoggingEvent event = (ILoggingEvent) eventObject;
+            return LevelToSyslogSeverity.convert(event);
+        } else {
+            return SyslogIF.LEVEL_INFO;
+        }
     }
 
     public SyslogConfigIF getSyslogConfig() {

@@ -8,6 +8,9 @@
       <host>localhost</host>
       <port>45553</port>
       <ident>syslog-test</ident>
+
+      <!-- make logger synchronous for the tests -->
+      <threaded>false</threaded>
     </syslogConfig>
   </appender>
 

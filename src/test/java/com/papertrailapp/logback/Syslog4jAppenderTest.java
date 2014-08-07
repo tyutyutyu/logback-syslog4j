@@ -44,17 +44,21 @@ public class Syslog4jAppenderTest extends TestCase {
 
         final TCPNetSyslogServerConfig tcpNetSyslogServerConfig = new TCPNetSyslogServerConfig(45553);
         tcpNetSyslogServerConfig.addEventHandler(new PrintStreamSyslogServerEventHandler(ps));
+
         final UDPNetSyslogServerConfig udpNetSyslogServerConfig = new UDPNetSyslogServerConfig(45553);
         udpNetSyslogServerConfig.addEventHandler(new PrintStreamSyslogServerEventHandler(ps));
+
         final SSLTCPNetSyslogServerConfig ssltcpNetSyslogServerConfig = new SSLTCPNetSyslogServerConfig();
         ssltcpNetSyslogServerConfig.setPort(45554);
         ssltcpNetSyslogServerConfig.addEventHandler(new PrintStreamSyslogServerEventHandler(ps));
+        ssltcpNetSyslogServerConfig.setKeyStore(this.getClass().getClassLoader().getResource("test-keystore.jks").getFile());
+        ssltcpNetSyslogServerConfig.setKeyStorePassword("password");
+        ssltcpNetSyslogServerConfig.setTrustStore(this.getClass().getClassLoader().getResource("test-keystore.jks").getFile());
+        ssltcpNetSyslogServerConfig.setTrustStorePassword("password");
 
         SyslogServer.createThreadedInstance("testTcp", tcpNetSyslogServerConfig);
         SyslogServer.createThreadedInstance("testUdp", udpNetSyslogServerConfig);
-
-        // Need to add a keystore to be able to test TLS
-        // SyslogServer.createThreadedInstance("testTls", ssltcpNetSyslogServerConfig);
+        SyslogServer.createThreadedInstance("testTls", ssltcpNetSyslogServerConfig);
     }
 
     protected void tearDown() {
@@ -72,7 +76,6 @@ public class Syslog4jAppenderTest extends TestCase {
         logger.info("test message over udp");
 
         context.stop();
-
         Thread.sleep(100);
 
         final String serverData = serverStream.toString();
@@ -90,7 +93,6 @@ public class Syslog4jAppenderTest extends TestCase {
         logger.info("test message over tcp");
 
         context.stop();
-
         Thread.sleep(100);
 
         final String serverData = serverStream.toString();
@@ -108,10 +110,9 @@ public class Syslog4jAppenderTest extends TestCase {
         logger.info("test message over tls");
 
         context.stop();
-
         Thread.sleep(100);
 
         final String serverData = serverStream.toString();
-        // assertTrue("Server received: " + serverData, serverData.contains("test message over tls"));
+        assertTrue("Server received: " + serverData, serverData.contains("test message over tls"));
     }
 }
