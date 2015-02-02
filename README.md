@@ -41,6 +41,8 @@ Then add the appender to your `logback.xml`.
       <port>514</port>
       <!-- program name to log as -->
       <ident>java-app</ident>
+      <!-- max log message length in bytes -->
+      <maxMessageLength>128000</maxMessageLength>
     </syslogConfig>
   </appender>
 
@@ -64,6 +66,8 @@ Then add the appender to your `logback.xml`.
       <port>514</port>
       <!-- program name to log as -->
       <ident>java-app</ident>
+      <!-- max log message length in bytes -->
+      <maxMessageLength>128000</maxMessageLength>
     </syslogConfig>
   </appender>
 
