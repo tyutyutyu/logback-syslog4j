@@ -26,7 +26,7 @@ Add this to your `pom.xml`:
 Then add the appender to your `logback.xml`.
 
 
-#### Logging via TCP with TLS
+#### Logging via TCP with TLS (recommended)
 
 ``` xml
   <appender name="SYSLOG-TLS" class="com.papertrailapp.logback.Syslog4jAppender">
