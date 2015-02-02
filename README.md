@@ -26,15 +26,15 @@ Add this to your `pom.xml`:
 Then add the appender to your `logback.xml`.
 
 
-#### Logging via UDP
+#### Logging via TCP with TLS
 
 ``` xml
-  <appender name="SYSLOG-UDP" class="com.papertrailapp.logback.Syslog4jAppender">
+  <appender name="SYSLOG-TLS" class="com.papertrailapp.logback.Syslog4jAppender">
     <layout class="ch.qos.logback.classic.PatternLayout">
       <pattern>%-5level %logger{35}: %m%n%xEx</pattern>
     </layout>
 
-    <syslogConfig class="org.productivity.java.syslog4j.impl.net.udp.UDPNetSyslogConfig">
+    <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.ssl.SSLTCPNetSyslogConfig">
       <!-- remote system to log to -->
       <host>localhost</host>
       <!-- remote port to log to -->
@@ -45,7 +45,7 @@ Then add the appender to your `logback.xml`.
   </appender>
 
   <root level="DEBUG">
-    <appender-ref ref="SYSLOG-UDP" />
+    <appender-ref ref="SYSLOG-TLS" />
   </root>
 ```
 
@@ -72,15 +72,15 @@ Then add the appender to your `logback.xml`.
   </root>
 ```
 
-#### Logging via TCP with TLS
+#### Logging via UDP
 
 ``` xml
-  <appender name="SYSLOG-TLS" class="com.papertrailapp.logback.Syslog4jAppender">
+  <appender name="SYSLOG-UDP" class="com.papertrailapp.logback.Syslog4jAppender">
     <layout class="ch.qos.logback.classic.PatternLayout">
       <pattern>%-5level %logger{35}: %m%n%xEx</pattern>
     </layout>
 
-    <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.ssl.SSLTCPNetSyslogConfig">
+    <syslogConfig class="org.productivity.java.syslog4j.impl.net.udp.UDPNetSyslogConfig">
       <!-- remote system to log to -->
       <host>localhost</host>
       <!-- remote port to log to -->
@@ -91,7 +91,7 @@ Then add the appender to your `logback.xml`.
   </appender>
 
   <root level="DEBUG">
-    <appender-ref ref="SYSLOG-TLS" />
+    <appender-ref ref="SYSLOG-UDP" />
   </root>
 ```
 
