@@ -26,6 +26,56 @@ Add this to your `pom.xml`:
 Then add the appender to your `logback.xml`.
 
 
+#### Logging via TCP with TLS (recommended)
+
+``` xml
+  <appender name="SYSLOG-TLS" class="com.papertrailapp.logback.Syslog4jAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%-5level %logger{35}: %m%n%xEx</pattern>
+    </layout>
+
+    <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.ssl.SSLTCPNetSyslogConfig">
+      <!-- remote system to log to -->
+      <host>localhost</host>
+      <!-- remote port to log to -->
+      <port>514</port>
+      <!-- program name to log as -->
+      <ident>java-app</ident>
+      <!-- max log message length in bytes -->
+      <maxMessageLength>128000</maxMessageLength>
+    </syslogConfig>
+  </appender>
+
+  <root level="DEBUG">
+    <appender-ref ref="SYSLOG-TLS" />
+  </root>
+```
+
+#### Logging via TCP
+
+``` xml
+  <appender name="SYSLOG-TCP" class="com.papertrailapp.logback.Syslog4jAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%-5level %logger{35}: %m%n%xEx</pattern>
+    </layout>
+
+    <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig">
+      <!-- remote system to log to -->
+      <host>localhost</host>
+      <!-- remote port to log to -->
+      <port>514</port>
+      <!-- program name to log as -->
+      <ident>java-app</ident>
+      <!-- max log message length in bytes -->
+      <maxMessageLength>128000</maxMessageLength>
+    </syslogConfig>
+  </appender>
+
+  <root level="DEBUG">
+    <appender-ref ref="SYSLOG-TCP" />
+  </root>
+```
+
 #### Logging via UDP
 
 ``` xml
@@ -46,52 +96,6 @@ Then add the appender to your `logback.xml`.
 
   <root level="DEBUG">
     <appender-ref ref="SYSLOG-UDP" />
-  </root>
-```
-
-#### Logging via TCP
-
-``` xml
-  <appender name="SYSLOG-TCP" class="com.papertrailapp.logback.Syslog4jAppender">
-    <layout class="ch.qos.logback.classic.PatternLayout">
-      <pattern>%-5level %logger{35}: %m%n%xEx</pattern>
-    </layout>
-
-    <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig">
-      <!-- remote system to log to -->
-      <host>localhost</host>
-      <!-- remote port to log to -->
-      <port>514</port>
-      <!-- program name to log as -->
-      <ident>java-app</ident>
-    </syslogConfig>
-  </appender>
-
-  <root level="DEBUG">
-    <appender-ref ref="SYSLOG-TCP" />
-  </root>
-```
-
-#### Logging via TCP with TLS
-
-``` xml
-  <appender name="SYSLOG-TLS" class="com.papertrailapp.logback.Syslog4jAppender">
-    <layout class="ch.qos.logback.classic.PatternLayout">
-      <pattern>%-5level %logger{35}: %m%n%xEx</pattern>
-    </layout>
-
-    <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.ssl.SSLTCPNetSyslogConfig">
-      <!-- remote system to log to -->
-      <host>localhost</host>
-      <!-- remote port to log to -->
-      <port>514</port>
-      <!-- program name to log as -->
-      <ident>java-app</ident>
-    </syslogConfig>
-  </appender>
-
-  <root level="DEBUG">
-    <appender-ref ref="SYSLOG-TLS" />
   </root>
 ```
 
