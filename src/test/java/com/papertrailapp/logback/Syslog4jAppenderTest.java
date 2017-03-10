@@ -116,4 +116,22 @@ public class Syslog4jAppenderTest extends TestCase {
         final String serverData = serverStream.toString();
         assertTrue("Server received: " + serverData, serverData.contains("test message over tls"));
     }
+
+    public void testTlsSenderWithLocalName() throws JoranException, InterruptedException {
+    	LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+    	JoranConfigurator configurator = new JoranConfigurator();
+    	configurator.setContext(context);
+    	context.reset();
+    	configurator.doConfigure(this.getClass().getClassLoader().getResourceAsStream("logback-syslog4j-tls-with-localname.xml"));
+    	
+    	Logger logger = context.getLogger("test-tls-with-localname");
+    	logger.info("test message over tls with localname");
+    	
+    	context.stop();
+    	Thread.sleep(100);
+    	
+    	final String serverData = serverStream.toString();
+    	assertTrue("Server received: " + serverData, serverData.contains("INFO customLocalName syslog-test"));
+    }
+    
 }
