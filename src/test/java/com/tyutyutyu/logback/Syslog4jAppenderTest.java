@@ -14,6 +14,7 @@ import org.graylog2.syslog4j.server.impl.net.tcp.ssl.SSLTCPNetSyslogServerConfig
 import org.graylog2.syslog4j.server.impl.net.udp.UDPNetSyslogServerConfig;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +54,7 @@ public class Syslog4jAppenderTest {
 		SyslogServer.shutdown();
 	}
 
+	@Test
 	public void testUdpSender() throws JoranException, InterruptedException {
 
 		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -71,6 +73,7 @@ public class Syslog4jAppenderTest {
 		assertThat(serverData).contains("test message over udp");
 	}
 
+	@Test
 	public void testTcpSender() throws JoranException, InterruptedException {
 
 		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -89,6 +92,7 @@ public class Syslog4jAppenderTest {
 		assertThat(serverData).contains("test message over tcp");
 	}
 
+	@Test
 	public void testTlsSender() throws JoranException, InterruptedException {
 
 		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -105,24 +109,6 @@ public class Syslog4jAppenderTest {
 
 		final String serverData = serverStream.toString();
 		assertThat(serverData).contains("test message over tls");
-	}
-
-	public void testTlsSenderWithLocalName() throws JoranException, InterruptedException {
-
-		LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-		JoranConfigurator configurator = new JoranConfigurator();
-		configurator.setContext(context);
-		context.reset();
-		configurator.doConfigure(this.getClass().getClassLoader().getResourceAsStream("logback-syslog4j-tls-with-localname.xml"));
-
-		Logger logger = context.getLogger("test-tls-with-localname");
-		logger.info("test message over tls with localname");
-
-		context.stop();
-		Thread.sleep(100);
-
-		final String serverData = serverStream.toString();
-		assertThat(serverData).contains("INFO customLocalName syslog-test");
 	}
 
 }
