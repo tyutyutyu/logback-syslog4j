@@ -23,6 +23,14 @@ Add this to your `pom.xml`:
       <artifactId>logback-syslog4j</artifactId>
       <version>1.0.0</version>
     </dependency>
+    <repository>
+		<id>bintray-tyutyutyu-com.tyutyutyu.papertrail</id>
+		<name>bintray</name>
+		<url>http://dl.bintray.com/tyutyutyu/com.tyutyutyu.papertrail</url>
+		<snapshots>
+			<enabled>false</enabled>
+		</snapshots>
+	</repository>
 ```
 
 Then add the appender to your `logback.xml`.
